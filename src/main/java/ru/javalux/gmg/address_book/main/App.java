@@ -1,4 +1,4 @@
-package ru.javalux.gmg.address_book;
+package ru.javalux.gmg.address_book.main;
 
 /**
  * Hello world!
