@@ -51,8 +51,8 @@ Create a Business interface and a implementation as such:
 ```java
 IAddressBook {
  
-    List<Person> findPersonsByCountry(Country country)
-    List<Person> findPersonsByCity(City City)
+    List<Person> findPersonsByCountry(Country country);
+    List<Person> findPersonsByCity(City City);
     List<Person> findPersonsByStreet(Street street);
     List<Person> findParentsOfChild(Child child);
     List<Child> findChildrenOfPerson(Person person);
