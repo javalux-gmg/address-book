@@ -20,7 +20,8 @@ what part using common SVN repository.
   1. 3 different countries
   2. 5-10 different cities for every country
   3. 50-100 citizen for every city
-    1. Citizen should have 1 – 4 kids
+    1. Citizen should have 0 – 4 kids
+10. Child cannot exist w/o parent
  
  
 **Country**
@@ -51,12 +52,12 @@ Create a Business interface and a implementation as such:
 ```java
 IAddressBook {
  
-    List<Person> findPersonsByCountry(Country country);
-    List<Person> findPersonsByCity(City City);
-    List<Person> findPersonsByStreet(Street street);
-    List<Person> findParentsOfChild(Child child);
-    List<Child> findChildrenOfPerson(Person person);
-    List<Child> findChildrenByStreet(Street street);
+    List<Person> findPerson(Country country);
+    List<Person> findPerson(City City);
+    List<Person> findPerson(Street street);
+    List<Person> findPerson(Child child);
+    List<Child> findChild(Person person);
+    List<Child> findChild(Street street);
     List<Street> findStreetsByCity(City city);
 }
 ```

@@ -24,7 +24,7 @@ public class PersonDAOImpl extends GenericDAOImpl<Person> implements PersonDAO {
         try {
             Query query = entityManager.createQuery(
                     "SELECT entity FROM Person entity " +
-                    "WHERE entity.country = :country ");
+                    "WHERE entity.street.city.country = :country ");
             query.setParameter("country", country);
             return (List<Person>) query.getResultList();
 

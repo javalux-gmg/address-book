@@ -1,9 +1,6 @@
 package ru.javalux.gmg.address_book.DAO.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class City {
@@ -11,6 +8,7 @@ public class City {
     @Id
     @GeneratedValue
     private long id;
+    @Column(unique = true)
     private String name;
     @ManyToOne
     private Country country;
@@ -28,32 +26,26 @@ public class City {
 
 
     public Country getCountry() {
-
         return country;
     }
 
     public void setCountry(Country country) {
-
         this.country = country;
     }
 
     public String getName() {
-
         return name;
     }
 
     public void setName(String name) {
-
         this.name = name;
     }
 
     public long getId() {
-
         return id;
     }
 
     public void setId(long id) {
-
         this.id = id;
     }
 

@@ -42,8 +42,6 @@ public class PersonDAOImplTest extends BaseDAOTest {
     private CountryDAO countryDAO;
     private CityDAO cityDAO;
     private StreetDAO streetDAO;
-    private BuildingDAO buildingDAO;
-    private ApartmentDAO apartmentDAO;
 
 
     @Before
@@ -53,21 +51,24 @@ public class PersonDAOImplTest extends BaseDAOTest {
 
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
-        // TODO check on person removal cascade removal of corresponding child/parent relations
-        Query del_all_persons_query = entityManager.createNativeQuery("delete from Person");
-        del_all_persons_query.executeUpdate();
+        Query queryDeletePersons = entityManager.createNativeQuery("delete from Person");
+        Query queryDeleteStreets = entityManager.createNativeQuery("delete from Street");
+        Query queryDeleteCities = entityManager.createNativeQuery("delete from City");
+        Query queryDeleteCountries = entityManager.createNativeQuery("delete from Country");
+        queryDeletePersons.executeUpdate();
+        queryDeleteStreets.executeUpdate();
+        queryDeleteCities.executeUpdate();
+        queryDeleteCountries.executeUpdate();
         tx.commit();
         personDAO = new PersonDAOImpl(entityManager);
         countryDAO = new CountryDAOImpl(entityManager);
         cityDAO = new CityDAOImpl(entityManager);
         streetDAO = new StreetDAOImpl(entityManager);
-        buildingDAO = new BuildingDAOImpl(entityManager);
-        apartmentDAO = new ApartmentDAOImpl(entityManager);
     }
 
     @Test
     public void testGetAll() throws Exception {
-
+        fail();
     }
 
     private Person createPerson1() throws Exception {
@@ -95,25 +96,19 @@ public class PersonDAOImplTest extends BaseDAOTest {
         Country country = new Country(countryName);
         City city = new City(cityName, country);
         Street street = new Street(streetName, city);
-        Building building = new Building(buildingName, street);
-        Apartment apartment = new Apartment(apartmentName, building);
         entityManager.getTransaction().begin();
         countryDAO.persist(country);
         cityDAO.persist(city);
         streetDAO.persist(street);
-        buildingDAO.persist(building);
-        apartmentDAO.persist(apartment);
         entityManager.getTransaction().commit();
 
-        Person person = new Parent();
+        Person person = new Person();
         person.setFirstName(firstName);
         person.setLastName(lastName);
         person.setAge(age);
-        person.setCountry(country);
-        person.setCity(city);
         person.setStreet(street);
-        person.setBuilding(building);
-        person.setApartment(apartment);
+        person.setBuilding(buildingName);
+        person.setApartment(apartmentName);
 
         return person;
     }
@@ -150,7 +145,7 @@ public class PersonDAOImplTest extends BaseDAOTest {
 
     @Test
     public void testRefresh() throws Exception {
-
+        fail();
     }
 
     @Test
@@ -164,23 +159,17 @@ public class PersonDAOImplTest extends BaseDAOTest {
         Country country = new Country(COUNTRY_NAME_2);
         City city = new City(CITY_NAME_2, country);
         Street street = new Street(STREET_NAME_2, city);
-        Building building = new Building(BUILDING_NAME_2, street);
-        Apartment apartment = new Apartment(APARTMENT_NAME_2, building);
         entityManager.getTransaction().begin();
         countryDAO.persist(country);
         cityDAO.persist(city);
         streetDAO.persist(street);
-        buildingDAO.persist(building);
-        apartmentDAO.persist(apartment);
         entityManager.getTransaction().commit();
         person.setFirstName(FIRST_NAME_2);
         person.setLastName(LAST_NAME_2);
         person.setAge(AGE_2);
-        person.setCountry(country);
-        person.setCity(city);
         person.setStreet(street);
-        person.setBuilding(building);
-        person.setApartment(apartment);
+        person.setBuilding(BUILDING_NAME_2);
+        person.setApartment(APARTMENT_NAME_2);
 
         entityManager.getTransaction().begin();
         personDAO.update(person);
@@ -210,17 +199,17 @@ public class PersonDAOImplTest extends BaseDAOTest {
 
     @Test
     public void testDeleteAll() throws Exception {
-
+        fail();
     }
 
     @Test
     public void testLockById() throws Exception {
-
+        fail();
     }
 
     @Test
     public void testLockByIdRange() throws Exception {
-
+        fail();
     }
 
     @Test
@@ -235,8 +224,7 @@ public class PersonDAOImplTest extends BaseDAOTest {
         List<Person> expectedPersons = new ArrayList<Person>();
         expectedPersons.add(person1);
 
-        System.out.println(person1.getCountry());
-        List<Person> foundPersons = personDAO.getPersonsByCountry(person1.getCountry());
+        List<Person> foundPersons = personDAO.getPersonsByCountry(person1.getStreet().getCity().getCountry());
 
         assertNotNull(foundPersons);
         boolean listsMatch = expectedPersons.containsAll(foundPersons) &&
