@@ -1,7 +1,7 @@
 package ru.javalux.gmg.address_book.DAO.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,24 +11,32 @@ import java.util.Set;
 @Entity
 public class Child extends Person {
 
-    @OneToMany(mappedBy = "child")
-    private Set<ParentChild> parents;
+    @ManyToMany
+    private Set<Person> parents;
 
 
-    public Set<ParentChild> getParents() {
+    public Set<Person> getParents() {
         return parents;
     }
 
-    public void setParents(Set<ParentChild> parents) {
+    public void setParents(Set<Person> parents) {
+        for (Person parent : parents) {
+            if (parent instanceof Child) {
+                throw new IllegalArgumentException("A child can't be also a parent.");
+            }
+        }
         this.parents = parents;
     }
 
-    public void addParent(Parent parent) {
+    public void addParent(Person parent) {
 
         if (parents == null) {
-            parents = new HashSet<ParentChild>();
+            parents = new HashSet<Person>();
         }
-        parents.add(new ParentChild(parent, this));
+        if (parent instanceof Child) {
+            throw new IllegalArgumentException("A child can't be also a parent.");
+        }
+        parents.add(parent);
     }
 
     @Override

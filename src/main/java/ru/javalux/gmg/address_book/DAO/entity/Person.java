@@ -1,15 +1,13 @@
 package ru.javalux.gmg.address_book.DAO.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Grigoriy Alexeev on 22 Jun 2014.
  */
 @Entity
-public abstract class Person {
+public class Person {
 
     @Id
     @GeneratedValue
@@ -18,15 +16,11 @@ public abstract class Person {
     private String lastName;
     private int age;
     @ManyToOne
-    private Country country;
-    @ManyToOne
-    private City city;
-    @ManyToOne
     private Street street;
-    @ManyToOne
-    private Building building;
-    @ManyToOne
-    private Apartment apartment;
+    private String building;
+    private String apartment;
+    @ManyToMany(mappedBy = "parents")
+    private Set<Child> children;
 
 
     public long getId() {
@@ -61,22 +55,6 @@ public abstract class Person {
         this.age = age;
     }
 
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     public Street getStreet() {
         return street;
     }
@@ -85,19 +63,19 @@ public abstract class Person {
         this.street = street;
     }
 
-    public Building getBuilding() {
+    public String getBuilding() {
         return building;
     }
 
-    public void setBuilding(Building building) {
+    public void setBuilding(String building) {
         this.building = building;
     }
 
-    public Apartment getApartment() {
+    public String getApartment() {
         return apartment;
     }
 
-    public void setApartment(Apartment apartment) {
+    public void setApartment(String apartment) {
         this.apartment = apartment;
     }
 
@@ -125,12 +103,6 @@ public abstract class Person {
         if (!building.equals(person.building)) {
             return false;
         }
-        if (!city.equals(person.city)) {
-            return false;
-        }
-        if (!country.equals(person.country)) {
-            return false;
-        }
         if (!firstName.equals(person.firstName)) {
             return false;
         }
@@ -151,8 +123,6 @@ public abstract class Person {
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
         result = 31 * result + age;
-        result = 31 * result + country.hashCode();
-        result = 31 * result + city.hashCode();
         result = 31 * result + street.hashCode();
         result = 31 * result + building.hashCode();
         result = 31 * result + apartment.hashCode();
@@ -167,8 +137,8 @@ public abstract class Person {
                ", firstName='" + firstName + '\'' +
                ", lastName='" + lastName + '\'' +
                ", age=" + age +
-               ", country=" + country +
-               ", city=" + city +
+               ", country=" + street.getCity().getCountry() +
+               ", city=" + street.getCity() +
                ", street=" + street +
                ", building=" + building +
                ", apartment=" + apartment;

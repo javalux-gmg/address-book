@@ -24,15 +24,21 @@ public class CountryDAOImplTest extends BaseDAOTest {
 
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
-        Query query = entityManager.createNativeQuery("delete from Country");
-        query.executeUpdate();
+        Query query_delete_persons = entityManager.createNativeQuery("delete from Person");
+        Query query_delete_streets = entityManager.createNativeQuery("delete from Street");
+        Query query_delete_cities = entityManager.createNativeQuery("delete from City");
+        Query query_delete_countries = entityManager.createNativeQuery("delete from Country");
+        query_delete_persons.executeUpdate();
+        query_delete_streets.executeUpdate();
+        query_delete_cities.executeUpdate();
+        query_delete_countries.executeUpdate();
         tx.commit();
         countryDAO = new CountryDAOImpl(entityManager);
     }
 
     @Test
     public void testGetAll() throws Exception {
-
+        fail();
     }
 
     @Test
@@ -69,7 +75,7 @@ public class CountryDAOImplTest extends BaseDAOTest {
 
     @Test
     public void testRefresh() throws Exception {
-
+        fail();
     }
 
     @Test
@@ -112,16 +118,16 @@ public class CountryDAOImplTest extends BaseDAOTest {
 
     @Test
     public void testDeleteAll() throws Exception {
-
+        fail();
     }
 
     @Test
     public void testLockById() throws Exception {
-
+        fail();
     }
 
     @Test
     public void testLockByIdRange() throws Exception {
-
+        fail();
     }
 }
